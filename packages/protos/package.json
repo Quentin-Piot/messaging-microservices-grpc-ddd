@@ -5,5 +5,21 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": ["*.proto"]
+  "scripts": {
+    "generate": "protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./generated --ts_proto_opt=nestJs=true -I=./ user.proto"
+  },
+  "files": [
+    "*.ts",
+    "*.proto"
+  ],
+  "dependencies": {
+    "@grpc/grpc-js": "^1.12.2",
+    "@grpc/proto-loader": "^0.7.13",
+    "@nestjs/microservices": "^10.4.6",
+    "@protobuf-ts/protoc": "^2.9.4",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "ts-proto": "^1.166.2"
+  }
 }

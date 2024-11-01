@@ -4,10 +4,12 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "generate": "turbo generate",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@types/node": "^20.3.1",
     "prettier": "^3.2.5",
     "turbo": "^2.2.3",
     "typescript": "^5.1.3"

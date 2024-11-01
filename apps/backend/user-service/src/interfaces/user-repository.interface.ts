@@ -1,4 +1,6 @@
-export interface IUserRepository {
+import { UserEntity } from "../domain/entities/user.entity";
 
-   save(user: any) : Promise<void>;
+export interface IUserRepository {
+   create(user: UserEntity): Promise<UserEntity>;
+   findByEmail(email: string): Promise<UserEntity | null>;
 }
