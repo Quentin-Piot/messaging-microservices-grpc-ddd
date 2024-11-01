@@ -1,62 +1,34 @@
 # Messaging App - Architecture and Microservices Training
 
-### Vue d'ensemble du projet
+### Project Overview
 
-L'objectif est de développer une application de messagerie pour explorer et approfondir les connaissances en architecture orientée services, en communication asynchrone, et en pratiques modernes de backend et de DevOps. Ce projet utilise des microservices pour créer une application modulaire et scalable où chaque service fonctionne de manière indépendante et communique via gRPC et RabbitMQ. La gestion de l'infrastructure est assurée avec Kubernetes pour l'orchestration des conteneurs et Terraform pour le provisioning et la gestion de l'infrastructure cloud.
+The goal is to develop a messaging application to explore and deepen knowledge in service-oriented architecture,
+asynchronous communication, and modern backend and DevOps practices. This project uses microservices to create a modular
+and scalable application where each service operates independently and communicates via gRPC and RabbitMQ.
+Infrastructure management is handled with Kubernetes for container orchestration and Terraform for cloud infrastructure
+provisioning and management.
 
-### Fonctionnalités principales
+### Main Features
 
-* Authentification d'utilisateurs : Service de connexion et d'authentification de base pour les utilisateurs.
-* Service de messagerie : Un microservice dédié à l'envoi, la réception, et le stockage des messages.
-* Service de notifications : Gère les notifications pour les messages reçus et l'activité des utilisateurs.
-* API Gateway : Un point d'entrée unique pour toutes les requêtes clients, les redirigeant vers le bon microservice.
-* Communication gRPC : Communication inter-service pour des interactions plus rapides et plus efficaces.
-* RabbitMQ pour la messagerie : Architecture orientée événements utilisant RabbitMQ comme message broker pour gérer les tâches asynchrones.
-* Gestion d'infrastructure : Utilisation de Kubernetes pour l'orchestration de conteneurs et de Terraform pour le provisioning de l'infrastructure.
+* User Authentication: Basic login and authentication service for users.
+* Messaging Service: A microservice dedicated to sending, receiving, and storing messages.
+* Notification Service: Manages notifications for received messages and user activity.
+* API Gateway: A single entry point for all client requests, redirecting them to the correct microservice.
+* gRPC Communication: Inter-service communication for faster and more efficient interactions.
+* RabbitMQ for Messaging: Event-driven architecture using RabbitMQ as a message broker to handle asynchronous tasks.
+* Infrastructure Management: Use of Kubernetes for container orchestration and Terraform for infrastructure
+  provisioning.
 
-### Stack technique
+### Technical Stack
 
-| Outil          | Utilisation                                   |
-|----------------|----------------------------------------------|
-| **Node.js**    | Serveur backend pour chaque microservice     |
-| **Express**    | Framework pour construire des API REST       |
-| **gRPC**       | Communication entre services                 |
-| **RabbitMQ**   | Message broker pour les tâches asynchrones   |
-| **Docker**     | Conteneurisation des services                |
-| **Kubernetes** | Orchestration des conteneurs pour le déploiement et la gestion  |
-| **Terraform**  | Provisioning de l'infrastructure cloud  |
-| **PostgreSQL** | Base de données pour les données utilisateur |
-
-
-L'application suit une architecture de microservices. Chaque microservice a un rôle distinct et peut être développé, déployé, et mis à l'échelle de manière indépendante. Cette architecture aide également à gérer des tâches complexes, comme la messagerie en temps réel, en répartissant la charge sur plusieurs services.
-Démarrage
-Prérequis
-
-* Docker et Docker Compose
-* Node.js et npm
-* Librairies gRPC pour Node.js
-* Serveur RabbitMQ (ou RabbitMQ dockerisé)
-
-### Installation
-
-Clonez le dépôt.
-```
-git clone https://github.com/Quentin-Piot/messaging-microservices-grpc-ddd
-cd messaging-microservices-grpc-ddd
-```
-
-Lancez les services avec Docker Compose.
-
-```
-docker-compose up
-```
-
-Configurez les fichiers .env dans chaque répertoire de microservice avec les variables d'environnement correspondantes.
-
-Lancez chaque microservice :
-
-```
-npm install
-npm start
-```
+| Tool           | Usage                                                 |
+|----------------|-------------------------------------------------------|
+| **Node.js**    | Backend server for each microservice                  |
+| **Express**    | Framework to build REST APIs                          |
+| **gRPC**       | Communication between services                        |
+| **RabbitMQ**   | Message broker for asynchronous tasks                 |
+| **Docker**     | Containerization of services                          |
+| **Kubernetes** | Container orchestration for deployment and management |
+| **Terraform**  | Cloud infrastructure provisioning                     |
+| **PostgreSQL** | Database for user data                                |
 
