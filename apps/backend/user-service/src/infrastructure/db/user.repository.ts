@@ -12,12 +12,14 @@ export class UserRepository implements IUserRepository {
             data: {
                 email: user.email,
                 password: user.password,
+                phoneNumber:user.phoneNumber
             },
         });
 
         return new UserEntity(
           created.email,
           created.password,
+          created.phoneNumber,
           created.createdAt,
           created.updatedAt,
         );
@@ -33,6 +35,7 @@ export class UserRepository implements IUserRepository {
         return new UserEntity(
           user.email,
           user.password,
+          user.phoneNumber,
           user.createdAt,
           user.updatedAt,
         );

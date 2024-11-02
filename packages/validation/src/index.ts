@@ -1,0 +1,1 @@
+export {ValidationFilter} from "./filters/http-validation-filter"

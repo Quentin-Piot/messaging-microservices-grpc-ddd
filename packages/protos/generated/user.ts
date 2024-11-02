@@ -7,20 +7,23 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-
+export const HTTP_STATUS_CODE=32
 export const protobufPackage = "user";
 
 export interface CreateUserRequest {
-  email: string;
+  email: number;
   password: string;
+  phoneNumber: string;
 }
 
 export interface GetUserRequest {
   email: string;
+  phoneNumber: string;
 }
 
 export interface UserResponse {
   email: string;
+  phoneNumber: string;
   createdAt: string;
   updatedAt: string;
 }

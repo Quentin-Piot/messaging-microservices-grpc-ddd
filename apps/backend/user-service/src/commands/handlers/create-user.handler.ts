@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ConflictException, Inject } from "@nestjs/common";
-import * as bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 import { CreateUserCommand } from "../create-user.command";
 import { IUserRepository } from "../../interfaces/user-repository.interface";
 import { UserEntity } from "../../domain/entities/user.entity";
@@ -15,8 +15,8 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
             throw new ConflictException('Email already exists');
         }
 
-        const hashedPassword = await bcrypt.hash(command.password, 10);
-        const user = new UserEntity(command.email, hashedPassword);
+        const hashedPassword = await argon2.hash(command.password);
+        const user = new UserEntity(command.email, hashedPassword, command.phoneNumber);
 
         return this.userRepository.create(user);
     }
