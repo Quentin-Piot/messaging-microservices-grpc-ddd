@@ -6,7 +6,7 @@
     "access": "public"
   },
   "scripts": {
-    "generate": "protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./generated --ts_proto_opt=nestJs=true -I=./ user.proto"
+    "build": "protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./generated --ts_proto_opt=nestJs=true -I=./ user.proto"
   },
   "exports": [
 

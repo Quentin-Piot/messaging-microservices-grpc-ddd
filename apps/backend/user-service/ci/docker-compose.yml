@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  nestjs-app:
+    build:
+      context: ../../../../
+      dockerfile:  apps/backend/user-service/ci/Dockerfile
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/user_db
+    depends_on:
+      - postgres
+    ports:
+      - "5000:5000"
+    command: >
+      sh -c "npx prisma migrate deploy --schema=./apps/backend/user-service/prisma/schema.prisma &&
+             node apps/backend/user-service/dist/main.js"
+
+volumes:
+  postgres_data:
