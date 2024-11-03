@@ -31,3 +31,7 @@ provisioning and management.
 | **Kubernetes** | Container orchestration for deployment and management |
 | **Terraform**  | Cloud infrastructure provisioning                     |
 | **PostgreSQL** | Database for user data                                |
+
+### Simplified Diagram
+
+![Simplified architecture](diagrams/diagram.png)
