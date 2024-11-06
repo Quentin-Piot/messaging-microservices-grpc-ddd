@@ -12,6 +12,7 @@ provisioning and management.
 
 * User Authentication: Basic login and authentication service for users.
 * Messaging Service: A microservice dedicated to sending, receiving, and storing messages.
+* Chat Service: A microservice to handle group and chat between users.
 * Notification Service: Manages notifications for received messages and user activity.
 * API Gateway: A single entry point for all client requests, redirecting them to the correct microservice.
 * gRPC Communication: Inter-service communication for faster and more efficient interactions.
