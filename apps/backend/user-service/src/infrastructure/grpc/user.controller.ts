@@ -1,7 +1,8 @@
 import { Controller, UseFilters, UsePipes, ValidationPipe } from "@nestjs/common";
 import { GrpcMethod } from "@nestjs/microservices";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
-import { GetUserQuery } from "../../queries/get-user.query";import {
+import { GetUserQuery } from "../../queries/get-user.query";
+import {
   CreateUserDto
 } from "@quentinpiot/dtos"
 import {
