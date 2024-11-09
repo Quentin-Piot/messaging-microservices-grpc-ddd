@@ -50,6 +50,9 @@ importers:
       '@prisma/client':
         specifier: ^5.21.1
         version: 5.21.1(prisma@5.21.1)
+      '@quentinpiot/dtos':
+        specifier: workspace:*
+        version: link:../../../packages/dtos
       '@quentinpiot/protos':
         specifier: workspace:*
         version: link:../../../packages/protos
@@ -146,6 +149,25 @@ importers:
         version: 5.6.3
 
   packages/configs: {}
+
+  packages/dtos:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^10.0.0
+        version: 10.4.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@quentinpiot/protos':
+        specifier: workspace:*
+        version: link:../protos
+      class-transformer:
+        specifier: ^0.5.1
+        version: 0.5.1
+      class-validator:
+        specifier: ^0.14.1
+        version: 0.14.1
+    devDependencies:
+      typescript:
+        specifier: ^5.1.3
+        version: 5.6.3
 
   packages/protos:
     dependencies:

@@ -1,9 +1,10 @@
 import { Controller, UseFilters, UsePipes, ValidationPipe } from "@nestjs/common";
 import { GrpcMethod } from "@nestjs/microservices";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
-import { GetUserQuery } from "../../queries/get-user.query";
+import { GetUserQuery } from "../../queries/get-user.query";import {
+  CreateUserDto
+} from "@quentinpiot/dtos"
 import {
-  CreateUserRequest,
   GetUserRequest,
   UserResponse,
   UserServiceController,
@@ -25,7 +26,7 @@ export class UserController implements UserServiceController {
   @GrpcMethod("UserService", "CreateUser")
   @UsePipes(new ValidationPipe({ transform: true }))
   @UseFilters(new ValidationFilter())
-  async createUser(request: CreateUserRequest): Promise<UserResponse> {
+  async createUser(request: CreateUserDto): Promise<UserResponse> {
 
     const user = await this.commandBus.execute(
       new CreateUserCommand(request.email + '', request.password, request.phoneNumber),
