@@ -101,14 +101,14 @@ resource "aws_security_group" "app" {
 
 # Instance EC2 avec plus de stockage pour les BDD
 resource "aws_instance" "app" {
-  ami           = "ami-0eb11ab33f229b26c" # Ubuntu 22.04 LTS
+  ami           = "ami-03753afda9b8ba740"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.main.id
   vpc_security_group_ids = [aws_security_group.app.id]
-  key_name      = "dev-messaging" # Remplacez par le nom de votre clé .pem
+  key_name      = "dev-messaging"
 
   root_block_device {
-    volume_size = 20 # Pour stocker les données PostgreSQL
+    volume_size = 20
   }
 
   tags = {
