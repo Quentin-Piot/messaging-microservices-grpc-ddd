@@ -18,14 +18,25 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-3
 
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Debug Directory
+        run: |
+          pwd
+          ls -la
+          ls -la terraform/
+
       - name: Terraform Init
-        run: terraform init
+        run: |
+          cd terraform
+          terraform init
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: |
+          cd terraform
+          terraform apply -auto-approve -var="ssh_key_name=${{ secrets.SSH_KEY_NAME }}"
 
       - name: Get EC2 IP
         run: echo "EC2_IP=$(terraform output -raw public_ip)" >> $GITHUB_ENV
