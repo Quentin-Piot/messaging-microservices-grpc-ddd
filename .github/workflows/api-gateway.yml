@@ -5,16 +5,72 @@ on:
     branches: [ "master" ]
     paths:
       - 'apps/backend/api-gateway/**'
+      - '.github/workflows/api-gateway.yml'
   pull_request:
     branches: [ "master" ]
 
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file apps/backend/api-gateway/ci/Dockerfile --tag api-gateway-dev:$(date +%s)
+      # Checkout the repository
+      - uses: actions/checkout@v4
+
+      # Set up AWS credentials using configure-aws-credentials action
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-3
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Log in to AWS ECR
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
+
+      # Build the Docker image
+      - name: Build the Docker image
+        run: |
+          docker build . --file apps/backend/api-gateway/ci/Dockerfile --tag api-gateway-dev:$(date +%s)
+
+      # Tag the image for ECR
+      - name: Tag Docker image for ECR
+        run: |
+          docker tag api-gateway-dev:$(date +%s) ${{ secrets.AWS_ECR_REGISTRY }}/api-gateway-dev:latest
+
+      # Push Docker image to ECR
+      - name: Push Docker image to ECR
+        run: |
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/api-gateway-dev:latest
+
+      # Get EC2 IP from Terraform output
+      - name: Get EC2 IP
+        run: |
+          EC2_IP=$(terraform output -raw public_ip)
+          echo "EC2_IP=$EC2_IP" >> $GITHUB_ENV
+
+      # Set up SSH to connect to EC2
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY_DEV }}" > ~/.ssh/private.key
+          chmod 600 ~/.ssh/private.key
+          ssh-keyscan -H ${{ secrets.AWS_EC2_INSTANCE }} >> ~/.ssh/known_hosts
+
+      # Deploy Application to EC2
+      - name: Deploy Application to EC2
+        run: |
+          ssh -i ~/.ssh/private.key ubuntu@${{ secrets.AWS_EC2_INSTANCE }} '
+            # Pull the latest Docker image from ECR
+            docker pull ${{ secrets.AWS_ECR_REGISTRY }}/api-gateway-dev:latest
+            # Restart Docker containers using Docker Compose
+            sudo docker-compose -f /apps/backend/api-gateway/ci/docker-compose.yml down
+            sudo docker-compose -f /apps/backend/api-gateway/ci/docker-compose.yml up -d
+          '
