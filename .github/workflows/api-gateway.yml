@@ -51,7 +51,7 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo ${{ secrets.EC2_SSH_KEY_DEV }} > ~/.ssh/private.pem
+          echo "${{ secrets.EC2_SSH_KEY_DEV }}" > ~/.ssh/private.pem
           chmod 600 ~/.ssh/private.pem
           ssh-keyscan -H ec2-52-66-173-198.ap-south-1.compute.amazonaws.com >> ~/.ssh/known_hosts
 
