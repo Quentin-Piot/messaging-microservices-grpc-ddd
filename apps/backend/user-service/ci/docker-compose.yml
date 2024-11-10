@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
 
-  nestjs-app:
+  user-service-app:
     build:
       context: ../../../../
       dockerfile:  apps/backend/user-service/ci/Dockerfile

@@ -19,6 +19,7 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/validation/.turbo" />
       <excludeFolder url="file://$MODULE_DIR$/packages/dtos/.turbo" />
       <excludeFolder url="file://$MODULE_DIR$/postman" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/backend/api-gateway/.turbo" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
