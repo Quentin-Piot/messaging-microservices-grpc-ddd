@@ -39,7 +39,7 @@ jobs:
           terraform apply -auto-approve -var="ssh_key_name=${{ secrets.EC2_SSH_KEY_DEV_NAME }}"
 
       - name: Get EC2 IP
-        run:  cd terraform
+        run:  cd terraform &&
               echo "EC2_IP=$(terraform output -raw public_ip)" >> $GITHUB_ENV
 
       - name: Set up SSH
