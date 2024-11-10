@@ -42,8 +42,8 @@ jobs:
           REPOSITORY: my-ecr-repo
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/messaging:latest . --file apps/backend/api-gateway/ci/Dockerfile
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/messaging:latest
+          docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest . --file apps/backend/api-gateway/ci/Dockerfile
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest
 
 
       # Get EC2 IP from Terraform output
@@ -65,7 +65,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/private.key ubuntu@${{ secrets.AWS_EC2_INSTANCE }} '
             # Pull the latest Docker image from ECR
-            docker pull ${{ secrets.AWS_ECR_REGISTRY }}/messaging:latest
+            docker pull ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest
             # Restart Docker containers using Docker Compose
             sudo docker-compose -f /apps/backend/api-gateway/ci/docker-compose.yml down
             sudo docker-compose -f /apps/backend/api-gateway/ci/docker-compose.yml up -d
