@@ -46,24 +46,19 @@ jobs:
           docker push ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest
 
 
-      # Get EC2 IP from Terraform output
-      - name: Get EC2 IP
-        run: |
-          EC2_IP=$(terraform output -raw public_ip)
-          echo "EC2_IP=$EC2_IP" >> $GITHUB_ENV
 
       # Set up SSH to connect to EC2
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY_DEV }}" > ~/.ssh/private.key
+          echo "ec2-52-66-173-198.ap-south-1.compute.amazonaws.com" > ~/.ssh/private.key
           chmod 600 ~/.ssh/private.key
-          ssh-keyscan -H ${{ secrets.AWS_EC2_INSTANCE }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ec2-52-66-173-198.ap-south-1.compute.amazonaws.com >> ~/.ssh/known_hosts
 
       # Deploy Application to EC2
       - name: Deploy Application to EC2
         run: |
-          ssh -i ~/.ssh/private.key ubuntu@${{ secrets.AWS_EC2_INSTANCE }} '
+          ssh -i ~/.ssh/private.key ec2-user@ec2-52-66-173-198.ap-south-1.@compute.amazonaws.com '
             # Pull the latest Docker image from ECR
             docker pull ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest
             # Restart Docker containers using Docker Compose
