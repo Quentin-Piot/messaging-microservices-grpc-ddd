@@ -60,7 +60,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/private.pem ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com '
              # Log in to Amazon ECR
-             $(aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }})
+             docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) 491085385866.dkr.ecr.ap-south-1.amazonaws.com
           
              # Pull the latest Docker image from ECR
              docker pull ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest
