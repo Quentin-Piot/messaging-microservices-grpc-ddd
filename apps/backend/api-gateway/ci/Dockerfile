@@ -27,7 +27,6 @@ COPY --from=builder /app/out/pnpm-lock.yaml .
 RUN pnpm install --frozen-lockfile
 
 
-RUN turbo run build --filter=@quentinpiot/dtos
 RUN turbo run build --filter=api-gateway...
 
 

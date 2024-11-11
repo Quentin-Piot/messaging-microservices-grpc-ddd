@@ -1,29 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ESNext",                           // Version de ECMAScript ciblée
-    "module": "CommonJS",                         // Type de module à utiliser
-    "lib": ["ESNext", "DOM"],                     // Bibliothèques à inclure
-    "outDir": "dist",                             // Répertoire de sortie pour les fichiers compilés
-    "rootDir": "src",                             // Répertoire source
-    "strict": true,                               // Active le mode strict
-    "esModuleInterop": true,                      // Permet l'importation de modules ES dans CommonJS
-    "skipLibCheck": true,                         // Ignore la vérification des fichiers de définition des bibliothèques
-    "forceConsistentCasingInFileNames": true,    // Force une casse cohérente dans les noms de fichiers
-    "declaration": true,                           // Génère les fichiers de déclaration (.d.ts)
-    "declarationDir": "dist/types",               // Répertoire pour les fichiers de déclaration
-    "moduleResolution": "node",                    // Méthode de résolution des modules
-    "removeComments": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "target": "ES2020",
+    "module": "CommonJS",                      // Type de module à utiliser
+    "lib": ["ESNext", "DOM"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
     "baseUrl": "./",
-    "incremental": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "strictPropertyInitialization": false,
+    "strict": true
   },
-  "include": ["src/**/*"],                         // Inclut tous les fichiers TypeScript dans le dossier src
-  "exclude": ["node_modules", "dist"]             // Exclut les répertoires node_modules et dist
+  "include": ["src/**/*.ts"]
 }
