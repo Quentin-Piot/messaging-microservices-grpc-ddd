@@ -39,6 +39,7 @@ RUN pnpm config set store-dir ~/.pnpm-store
 
 
 COPY --from=installer --chown=nestjs:nodejs /app ./
+
 COPY --from=builder /app/packages/protos/generated ./node_modules/@quentinpiot/protos/generated
 COPY --from=builder /app/packages/protos/package.json ./node_modules/@quentinpiot/protos/package.json
 COPY --from=builder /app/packages/dtos/dist ./node_modules/@quentinpiot/dtos/dist
