@@ -23,7 +23,7 @@ RUN pnpm config set store-dir ~/.pnpm-store
 COPY --from=builder /app/pnpm-lock.yaml .
 COPY --from=builder /app/out/json/ .
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 COPY --from=builder /app/out/full/ .
 RUN turbo run build --filter=api-gateway...
