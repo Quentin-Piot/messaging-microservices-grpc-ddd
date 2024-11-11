@@ -1,11 +1,9 @@
 services:
   api-gateway:
-    image: ${AWS_ECR_REGISTRY}/messaging/api-gateway-dev:latest
+    image: api-gateway
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     ports:
       - "3000:3000"
-    command: >
-      sh -c "node apps/backend/api-gateway/dist/main.js"
 
