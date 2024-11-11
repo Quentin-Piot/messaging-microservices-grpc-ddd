@@ -61,21 +61,34 @@ jobs:
         run: |
           scp -i ~/.ssh/private.pem apps/backend/api-gateway/ci/docker-compose.yml ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com:/home/ec2-user/docker-compose.yml
 
+      # Set up SSH and copy .env to EC2
+      - name: Create and Copy .env file to EC2
+        run: |
+          # Create the .env file with secrets
+          echo "AWS_ECR_REGISTRY=${{ secrets.AWS_ECR_REGISTRY }}" > .env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          
+          # Copy the .env file to the EC2 instance
+          scp -i ~/.ssh/private.pem .env ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com:/home/ec2-user/.env
+
+      # Deploy Application to EC2 using the .env file
       - name: Deploy Application to EC2
         run: |
           ssh -i ~/.ssh/private.pem ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com '
-             # Set environment variables for Docker Compose
-             export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
-             export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-             export AWS_ECR_REGISTRY="${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest"
+            # Log in to Amazon ECR
+            AWS_ECR_REGISTRY="${{ secrets.AWS_ECR_REGISTRY }}" \
+            docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) $AWS_ECR_REGISTRY
           
-             # Log in to Amazon ECR
-             docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) $AWS_ECR_REGISTRY
+            # Pull the latest Docker image from ECR
+             docker pull ${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest
           
-             # Pull the latest Docker image from ECR
-             docker pull $AWS_ECR_REGISTRY
-          
-             # Start Docker containers using the copied Docker Compose file with environment variables
-             AWS_ECR_REGISTRY="$AWS_ECR_REGISTRY" sudo docker-compose -f /home/ec2-user/docker-compose.yml down
-             AWS_ECR_REGISTRY="$AWS_ECR_REGISTRY" sudo docker-compose -f /home/ec2-user/docker-compose.yml up -d
+            # Use the .env file with Docker Compose for deployment
+            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml down
+            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml up -d
           '
+
+      # Optional: Clean up the .env file from the local GitHub Actions environment (for security)
+      - name: Remove Local .env file
+        run: |
+          rm .env
