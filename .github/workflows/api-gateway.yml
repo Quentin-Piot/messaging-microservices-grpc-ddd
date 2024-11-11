@@ -42,8 +42,8 @@ jobs:
           REPOSITORY: my-ecr-repo
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest . --file apps/backend/api-gateway/ci/Dockerfile
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest
+          docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest . --file apps/backend/api-gateway/ci/Dockerfile
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest
 
 
 
@@ -68,9 +68,9 @@ jobs:
              docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.AWS_ECR_REGISTRY }}
           
              # Pull the latest Docker image from ECR
-             docker pull ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest
+             docker pull ${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest
           
              # Start Docker containers using the copied Docker Compose file
-             sudo docker-compose -f /home/ec2-user/docker-compose.yml down
-             sudo docker-compose -f /home/ec2-user/docker-compose.yml up -d
+             AWS_ECR_REGISTRY="${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest" sudo docker-compose -f /home/ec2-user/docker-compose.yml down
+             AWS_ECR_REGISTRY="${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest" sudo docker-compose -f /home/ec2-user/docker-compose.yml up -d
            '

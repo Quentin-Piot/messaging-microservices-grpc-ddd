@@ -1,8 +1,7 @@
 services:
  api-gateway-app:
-    build:
-      context: ../../../../
-      dockerfile:  apps/backend/api-gateway/ci/Dockerfile
+    image:
+      "${AWS_ECR_REGISTRY}/dev:latest"  # Use the pulled image from ECR
     ports:
       - "3000:3000"
     command: >
