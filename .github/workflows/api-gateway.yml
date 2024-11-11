@@ -1,108 +1,18 @@
 name: Api Gateway
-
 on:
   push:
     branches: [ "master" ]
     paths:
       - 'apps/backend/api-gateway/**'
       - '.github/workflows/api-gateway.yml'
+      - 'packages/**'
   pull_request:
     branches: [ "master" ]
 
 jobs:
-
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Checkout the repository
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build packages
-        run: pnpm exec turbo run build
-
-        # Set up AWS credentials using configure-aws-credentials action
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
-
-      # Set up Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-
-      - name: Build, tag, and push docker image to Amazon ECR
-        run: |
-          docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest . --file apps/backend/api-gateway/ci/Dockerfile
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest
-
-
-
-      # Set up SSH to connect to EC2
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY_DEV }}" > ~/.ssh/private.pem
-          chmod 600 ~/.ssh/private.pem
-          ssh-keyscan -H ec2-52-66-173-198.ap-south-1.compute.amazonaws.com >> ~/.ssh/known_hosts
-    
-
-      # Deploy Application to EC2
-      - name: Copy docker-compose.yml to EC2
-        run: |
-          scp -i ~/.ssh/private.pem apps/backend/api-gateway/ci/docker-compose.yml ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com:/home/ec2-user/docker-compose.yml
-
-      # Set up SSH and copy .env to EC2
-      - name: Create and Copy .env file to EC2
-        run: |
-          # Create the .env file with secrets
-          echo "AWS_ECR_REGISTRY=${{ secrets.AWS_ECR_REGISTRY }}" > .env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
-          
-          # Copy the .env file to the EC2 instance
-          scp -i ~/.ssh/private.pem .env ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com:/home/ec2-user/.env
-
-      # Deploy Application to EC2 using the .env file
-      - name: Deploy Application to EC2
-        run: |
-          ssh -i ~/.ssh/private.pem ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com '
-            # Log in to Amazon ECR
-            docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.AWS_ECR_REGISTRY }}
-          
-             # Pull the latest Docker image from ECR
-             docker pull ${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest
-          
-          
-            # Use the .env file with Docker Compose for deployment
-            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml down
-            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml up -d
-          '
-
-      # Optional: Clean up the .env file from the local GitHub Actions environment (for security)
-      - name: Remove Local .env file
-        run: |
-          rm .env
+  deploy:
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      app-path: apps/backend/api-gateway
+      image-name: messaging/api-gateway-dev
+    secrets: inherit
