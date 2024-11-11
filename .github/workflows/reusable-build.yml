@@ -1,0 +1,96 @@
+# .github/workflows/reusable-build.yml
+name: Reusable Build Workflow
+on:
+  workflow_call:
+    inputs:
+      app-path:
+        required: true
+        type: string
+      image-name:
+        required: true
+        type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_ECR_REGISTRY:
+        required: true
+      EC2_SSH_KEY_DEV:
+        required: true
+      EC2_HOST:
+        required: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm exec turbo run build --filter=${{ inputs.app-path }}...
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ inputs.app-path }}/ci/Dockerfile
+          push: true
+          tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.image-name }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Deploy to EC2
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY_DEV }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          # Setup SSH
+          mkdir -p ~/.ssh
+          echo "$EC2_SSH_KEY" > ~/.ssh/private.pem
+          chmod 600 ~/.ssh/private.pem
+          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+          
+          # Copy deployment files
+          scp -i ~/.ssh/private.pem ${{ inputs.app-path }}/ci/docker-compose.yml ec2-user@$EC2_HOST:/home/ec2-user/docker-compose.yml
+          
+          # Create and copy .env
+          echo "AWS_ECR_REGISTRY=${{ secrets.AWS_ECR_REGISTRY }}" > .env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          scp -i ~/.ssh/private.pem .env ec2-user@$EC2_HOST:/home/ec2-user/.env
+          
+          # Deploy
+          ssh -i ~/.ssh/private.pem ec2-user@$EC2_HOST '
+            docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.AWS_ECR_REGISTRY }}
+            docker pull ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.image-name }}:latest
+            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml down
+            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml up -d
+          '
+          
+          # Cleanup
+          rm .env
