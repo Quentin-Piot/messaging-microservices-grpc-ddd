@@ -28,7 +28,7 @@ COPY --from=builder /app/out/pnpm-lock.yaml .
 RUN pnpm install --frozen-lockfile
 
 
-RUN turbo run build --filter=user-service
+RUN turbo run build --filter=user-service...
 
 
 # Phase d'exécution
