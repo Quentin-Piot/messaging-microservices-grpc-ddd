@@ -53,9 +53,6 @@ importers:
       '@quentinpiot/protos':
         specifier: workspace:*
         version: link:../../../packages/protos
-      '@quentinpiot/validation':
-        specifier: workspace:*
-        version: link:../../../packages/validation
       argon2:
         specifier: ^0.41.1
         version: 0.41.1
