@@ -26,7 +26,9 @@ COPY --from=builder /app/out/json/ .
 RUN pnpm install
 
 COPY --from=builder /app/out/full/ .
+RUN turbo run build --filter=@quentinpiot/dtos
 RUN turbo run build --filter=api-gateway...
+
 
 # Phase d'exécution
 FROM base AS runner
