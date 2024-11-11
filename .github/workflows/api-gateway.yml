@@ -15,4 +15,5 @@ jobs:
     with:
       app-path: apps/backend/api-gateway
       image-name: messaging/api-gateway-dev
+      app-name: api-gateway
     secrets: inherit
