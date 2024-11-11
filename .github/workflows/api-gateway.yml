@@ -5,6 +5,7 @@ on:
     paths:
       - 'apps/backend/api-gateway/**'
       - '.github/workflows/api-gateway.yml'
+      - '.github/workflows/reusable-build.yml'
       - 'packages/**'
   pull_request:
     branches: [ "master" ]
