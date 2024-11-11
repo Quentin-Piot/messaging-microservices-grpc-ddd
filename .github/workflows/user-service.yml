@@ -1,38 +1,20 @@
-name: User Service Build
-
+name: User service
 on:
   push:
     branches: [ "master" ]
     paths:
       - 'apps/backend/user-service/**'
       - '.github/workflows/user-service.yml'
+      - '.github/workflows/reusable-build.yml'
+      - 'packages/**'
   pull_request:
     branches: [ "master" ]
-    paths:
-      - 'apps/backend/user-service/**'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build the Docker image
-        run: |
-          docker build -f apps/backend/user-service/ci/Dockerfile \
-          -t user-service-dev:latest .
-
-      - name: Save Docker image as artifact
-        run: |
-          docker save user-service-dev:latest | gzip > user-service-image.tar.gz
-          # Uploads the Docker image as an artifact
-          - name: Upload artifact
-            uses: actions/upload-artifact@v3
-            with:
-              name: user-service-image
-              path: user-service-image.tar.gz
+  deploy:
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      app-path: apps/backend/user-service
+      image-name: messaging/user-service-dev
+      app-name: user-service
+    secrets: inherit
