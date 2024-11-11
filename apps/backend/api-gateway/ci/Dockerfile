@@ -40,10 +40,10 @@ RUN pnpm config set store-dir ~/.pnpm-store
 
 COPY --from=installer --chown=nestjs:nodejs /app ./
 
-COPY --from=builder /app/packages/protos/generated ./node_modules/@quentinpiot/protos/generated
-COPY --from=builder /app/packages/protos/package.json ./node_modules/@quentinpiot/protos/package.json
-COPY --from=builder /app/packages/dtos/dist ./node_modules/@quentinpiot/dtos/dist
-COPY --from=builder /app/packages/dtos/package.json ./node_modules/@quentinpiot/dtos/package.json
+COPY --from=builder /app/packages/protos/generated ./apps/backend/api-gateway/node_modules/@quentinpiot/protos/generated
+COPY --from=builder /app/packages/protos/package.json ./apps/backend/api-gateway/node_modules/@quentinpiot/protos/package.json
+COPY --from=builder /app/packages/dtos/dist ./apps/backend/api-gateway/node_modules/@quentinpiot/dtos/dist
+COPY --from=builder /app/packages/dtos/package.json ./apps/backend/api-gateway/node_modules/@quentinpiot/dtos/package.json
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nestjs
