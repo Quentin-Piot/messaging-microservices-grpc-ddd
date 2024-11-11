@@ -54,18 +54,23 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY_DEV }}" > ~/.ssh/private.pem
           chmod 600 ~/.ssh/private.pem
           ssh-keyscan -H ec2-52-66-173-198.ap-south-1.compute.amazonaws.com >> ~/.ssh/known_hosts
+    
 
       # Deploy Application to EC2
+      - name: Copy docker-compose.yml to EC2
+        run: |
+          scp -i ~/.ssh/private.pem apps/backend/api-gateway/ci/docker-compose.yml ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com:/home/ec2-user/docker-compose.yml
+
       - name: Deploy Application to EC2
         run: |
           ssh -i ~/.ssh/private.pem ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com '
              # Log in to Amazon ECR
-             docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) 491085385866.dkr.ecr.ap-south-1.amazonaws.com
+             docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.AWS_ECR_REGISTRY }}
           
              # Pull the latest Docker image from ECR
              docker pull ${{ secrets.AWS_ECR_REGISTRY }}/dev:latest
           
-             # Restart Docker containers using Docker Compose
-             sudo docker-compose -f /apps/backend/api-gateway/ci/docker-compose.yml down
-             sudo docker-compose -f /apps/backend/api-gateway/ci/docker-compose.yml up -d
+             # Start Docker containers using the copied Docker Compose file
+             sudo docker-compose -f /home/ec2-user/docker-compose.yml down
+             sudo docker-compose -f /home/ec2-user/docker-compose.yml up -d
            '
