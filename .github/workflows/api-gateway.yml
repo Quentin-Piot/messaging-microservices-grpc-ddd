@@ -77,11 +77,11 @@ jobs:
         run: |
           ssh -i ~/.ssh/private.pem ec2-user@ec2-52-66-173-198.ap-south-1.compute.amazonaws.com '
             # Log in to Amazon ECR
-            AWS_ECR_REGISTRY="${{ secrets.AWS_ECR_REGISTRY }}" \
-            docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) $AWS_ECR_REGISTRY
+            docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.AWS_ECR_REGISTRY }}
           
-            # Pull the latest Docker image from ECR
+             # Pull the latest Docker image from ECR
              docker pull ${{ secrets.AWS_ECR_REGISTRY }}/messaging/api-gateway-dev:latest
+          
           
             # Use the .env file with Docker Compose for deployment
             sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml down
