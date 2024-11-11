@@ -1,6 +1,6 @@
 services:
   api-gateway:
-    image: ${AWS_ECR_REGISTRY}
+    image: ${AWS_ECR_REGISTRY}/messaging/api-gateway-dev:latest
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
