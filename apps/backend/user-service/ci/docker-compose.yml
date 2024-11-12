@@ -2,7 +2,6 @@ services:
   postgres:
     image: postgres:16
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/user_db
       POSTGRES_DB: user_db
       POSTGRES_USER: postgres
       POSTGRES_HOST: localhost
@@ -14,12 +13,17 @@ services:
     networks:
       - custom_network
 
-  user-service-app:
-    build:
-      context: ../../../../
-      dockerfile:  apps/backend/user-service/ci/Dockerfile
+  user-service:
+    image: ${AWS_ECR_REGISTRY}/messaging/api-gateway-dev:latest
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/user_db
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/user_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=user_db
+      - POSTGRES_HOST=localhost
+
     depends_on:
       - postgres
     ports:

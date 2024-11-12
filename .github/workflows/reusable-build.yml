@@ -103,7 +103,7 @@ jobs:
           ssh -i ~/.ssh/private.pem ec2-user@$EC2_HOST '
             docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.AWS_ECR_REGISTRY }}
             docker pull ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.image-name }}:latest
-            sudo docker-compose --env-file /home/ec2-user/${{ inputs.image-name }}/.env -f /home/ec2-user/${{ inputs.image-name }}/docker-compose.yml down
+            sudo docker-compose -f /home/ec2-user/${{ inputs.image-name }}/docker-compose.yml down
             sudo docker-compose --env-file /home/ec2-user/${{ inputs.image-name }}/.env -f /home/ec2-user/${{ inputs.image-name }}/docker-compose.yml up -d
           '
           
