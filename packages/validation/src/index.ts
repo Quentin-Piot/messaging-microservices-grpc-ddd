@@ -1,1 +1,1 @@
-export {ValidationFilter} from "./filters/http-validation-filter"
+export * from "./http-validation-filter"

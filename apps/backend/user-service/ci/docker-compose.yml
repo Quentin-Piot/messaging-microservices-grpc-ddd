@@ -32,9 +32,6 @@ services:
       - shared-data:/shared
     networks:
       - custom_network
-    command: >
-      sh -c "npx prisma migrate deploy --schema=apps/backend/user-service/src/infrastructure/persistence/prisma/schema.prisma &&
-             node apps/backend/user-service/dist/main.js"
 
 
 volumes:
