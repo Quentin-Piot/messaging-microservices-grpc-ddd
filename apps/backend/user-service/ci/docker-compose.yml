@@ -22,6 +22,10 @@ services:
       - postgres
     ports:
       - "5000:5000"
+    volumes:
+      - shared-data:/shared
+    networks:
+      - custom_network
     command: >
       sh -c "npx prisma migrate deploy --schema=./apps/backend/user-service/prisma/schema.prisma &&
              node apps/backend/user-service/dist/main.js"
@@ -32,3 +36,9 @@ volumes:
     driver: local
   postgres_data:
 
+
+
+
+networks:
+  custom_network:
+    name: ec2-user_user-network

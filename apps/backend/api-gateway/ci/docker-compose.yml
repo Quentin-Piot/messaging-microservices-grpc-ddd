@@ -8,7 +8,13 @@ services:
       - "3000:3000"
     volumes:
       - shared-data:/shared
+    networks:
+      - custom_network
 
 volumes:
   shared-data:
     driver: local
+
+networks:
+  custom_network:
+    name: ec2-user_gateway-network
