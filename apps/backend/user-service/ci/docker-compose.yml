@@ -24,5 +24,9 @@ services:
       sh -c "npx prisma migrate deploy --schema=./apps/backend/user-service/prisma/schema.prisma &&
              node apps/backend/user-service/dist/main.js"
 
+
 volumes:
+  shared-data:
+    driver: local
   postgres_data:
+

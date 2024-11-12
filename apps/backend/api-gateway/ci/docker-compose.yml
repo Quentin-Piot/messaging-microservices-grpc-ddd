@@ -6,3 +6,9 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     ports:
       - "3000:3000"
+    volumes:
+      - shared-data:/shared
+
+volumes:
+  shared-data:
+    driver: local
