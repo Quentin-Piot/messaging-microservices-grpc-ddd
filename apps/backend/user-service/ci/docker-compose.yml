@@ -2,8 +2,10 @@ services:
   postgres:
     image: postgres:16
     environment:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/user_db
       POSTGRES_DB: user_db
       POSTGRES_USER: postgres
+      POSTGRES_HOST: localhost
       POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data

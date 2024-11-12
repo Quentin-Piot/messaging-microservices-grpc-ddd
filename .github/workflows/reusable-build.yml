@@ -41,6 +41,15 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+
       - name: Install dependencies
         run: pnpm install
 
@@ -65,6 +74,9 @@ jobs:
           file: ${{ inputs.app-path }}/ci/Dockerfile
           push: true
           tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.image-name }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
 
       - name: Deploy to EC2
         env:
