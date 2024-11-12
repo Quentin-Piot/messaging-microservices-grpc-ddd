@@ -98,6 +98,7 @@ jobs:
           
           # Deploy
           ssh -i ~/.ssh/private.pem ec2-user@$EC2_HOST '
+            mkdir -p /apps
             docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.AWS_ECR_REGISTRY }}
             docker pull ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.image-name }}:latest
             sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml down
