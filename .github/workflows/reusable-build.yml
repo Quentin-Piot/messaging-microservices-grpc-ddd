@@ -90,7 +90,7 @@ jobs:
           
           # Copy deployment files
           
-          ssh  -i ~/.ssh/private.pem ec2-user@$EC2_HOST "sudo mkdir -p /home/ec2-user/${{ inputs.image-name }}"
+          ssh  -i ~/.ssh/private.pem ec2-user@$EC2_HOST "mkdir -p /home/ec2-user/${{ inputs.image-name }}"
           scp -i ~/.ssh/private.pem ${{ inputs.app-path }}/ci/docker-compose.yml ec2-user@$EC2_HOST:/home/ec2-user/${{ inputs.image-name }}/docker-compose.yml
           
           # Create and copy .env
