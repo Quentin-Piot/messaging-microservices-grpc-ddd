@@ -1,4 +1,4 @@
-import { ClientProviderOptions, ClientsModuleOptions, Transport } from "@nestjs/microservices";
+import { ClientProviderOptions, Transport } from "@nestjs/microservices";
 import { join } from "path";
 
 export const grpcClientOptions: ClientProviderOptions = {
@@ -7,6 +7,6 @@ export const grpcClientOptions: ClientProviderOptions = {
   options: {
     package: "user",
     protoPath: join(__dirname, "..", "node_modules", "@quentinpiot", "protos", "user.proto"),
-    url: "localhost:5000",
+    url: (process.env.NODE_ENV === "development") ?  "localhost:5000" : "user-service:5000",
   },
 };
