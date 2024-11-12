@@ -88,7 +88,7 @@ jobs:
           ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
           
           # Copy deployment files
-          scp -i ~/.ssh/private.pem ${{ inputs.app-path }}/ci/docker-compose.yml ec2-user@$EC2_HOST:/home/ec2-user/docker-compose.yml
+          scp -i ~/.ssh/private.pem ${{ inputs.app-path }}/ci/docker-compose.yml ec2-user@$EC2_HOST:/home/ec2-user/${{ inputs.image-name }}/docker-compose.yml
           
           # Create and copy .env
           echo "AWS_ECR_REGISTRY=${{ secrets.AWS_ECR_REGISTRY }}" > .env
@@ -98,11 +98,11 @@ jobs:
           
           # Deploy
           ssh -i ~/.ssh/private.pem ec2-user@$EC2_HOST '
-            mkdir -p /apps
+            sudo mkdir -p /home/ec2-user/${{ inputs.image-name }}
             docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.AWS_ECR_REGISTRY }}
             docker pull ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.image-name }}:latest
-            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml down
-            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose.yml up -d
+            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/${{ inputs.image-name }}/docker-compose.yml down
+            sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/${{ inputs.image-name }}/docker-compose.yml up -d
           '
           
           # Cleanup
