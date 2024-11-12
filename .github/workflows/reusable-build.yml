@@ -74,8 +74,6 @@ jobs:
           file: ${{ inputs.app-path }}/ci/Dockerfile
           push: true
           tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.image-name }}:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
 
       - name: Deploy to EC2
