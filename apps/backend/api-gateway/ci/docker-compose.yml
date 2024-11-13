@@ -9,7 +9,7 @@ services:
     volumes:
       - shared-data:/shared
     networks:
-      - custom_network
+      - ec2-user_user-network
 
 volumes:
   shared-data:
