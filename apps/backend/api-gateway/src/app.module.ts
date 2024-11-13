@@ -1,13 +1,19 @@
 import { Module } from "@nestjs/common";
-import { grpcClientOptions } from "./grpc.options";
-import { ClientProxyFactory, ClientsModule } from "@nestjs/microservices";
+import { ClientsModule, Transport } from "@nestjs/microservices";
 import { UserController } from "./user/user.controller";
+import { join } from "path";
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        ...grpcClientOptions,
+        name: "USER_PACKAGE",
+        transport: Transport.GRPC,
+        options: {
+          package: "user",
+          protoPath: join(__dirname, "..", "node_modules", "@quentinpiot", "protos", "user.proto"),
+          url: "user-service:5000",
+        },
       },
     ]),
   ],
