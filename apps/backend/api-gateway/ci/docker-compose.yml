@@ -16,5 +16,6 @@ volumes:
     driver: local
 
 networks:
-  custom_network:
-    name: ec2-user_gateway-network
+  default:
+    external:
+      name: ec2-user_user-network
