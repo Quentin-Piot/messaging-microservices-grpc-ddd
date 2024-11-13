@@ -9,9 +9,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    networks:
-      - custom_network
-
+      
   user-service:
     image: ${AWS_ECR_REGISTRY}/messaging/user-service-dev:latest
     environment:
@@ -29,14 +27,13 @@ services:
       - "5000:5000"
     volumes:
       - shared-data:/shared
-    networks:
-      - custom_network
-
+    
 volumes:
   shared-data:
     driver: local
   postgres_data:
 
 networks:
-  custom_network:
-    name: ec2-user_user-network
+  default:
+    external:
+      name: ec2-user_user-network
