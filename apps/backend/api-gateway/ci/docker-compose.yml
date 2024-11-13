@@ -8,8 +8,6 @@ services:
       - "3000:3000"
     volumes:
       - shared-data:/shared
-    networks:
-      - ec2-user_user-network
 
 volumes:
   shared-data:
