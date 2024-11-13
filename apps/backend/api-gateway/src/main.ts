@@ -4,9 +4,6 @@ import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  console.log("user-service:5000")
-
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000); // API Gateway listens on port 3000
+  await app.listen(3000);
 }
-bootstrap();

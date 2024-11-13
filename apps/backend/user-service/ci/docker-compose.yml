@@ -9,7 +9,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-      
   user-service:
     image: ${AWS_ECR_REGISTRY}/messaging/user-service-dev:latest
     environment:
