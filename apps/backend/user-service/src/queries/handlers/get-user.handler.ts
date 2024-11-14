@@ -9,7 +9,7 @@ export class GetUserHandler implements IQueryHandler<GetUserQuery> {
   constructor( @Inject('IUserRepository') private readonly userRepository: IUserRepository) {}
 
   async execute(query: GetUserQuery): Promise<UserEntity> {
-    const user = await this.userRepository.findByEmail(query.email);
+    const user = await this.userRepository.findByEmailOrPhoneNumber(query.email, query.phoneNumber);
     if (!user) {
       throw new NotFoundException('User not found');
     }

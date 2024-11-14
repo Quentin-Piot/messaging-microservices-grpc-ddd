@@ -12,7 +12,7 @@ import { join } from "path";
         options: {
           package: "user",
           protoPath: join(__dirname, "..", "node_modules", "@quentinpiot", "protos", "user.proto"),
-          url: "user-service:5000",
+          url: "localhost:5000",
         },
       },
     ]),

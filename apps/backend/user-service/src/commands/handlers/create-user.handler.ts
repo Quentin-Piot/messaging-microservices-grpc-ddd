@@ -10,7 +10,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     constructor( @Inject('IUserRepository') private readonly userRepository: IUserRepository) {}
 
     async execute(command: CreateUserCommand): Promise<UserEntity> {
-        const existingUser = await this.userRepository.findByEmail(command.email);
+        const existingUser = await this.userRepository.findByEmailOrPhoneNumber(command.email,command.phoneNumber);
         if (existingUser) {
             throw new ConflictException('Email already exists');
         }

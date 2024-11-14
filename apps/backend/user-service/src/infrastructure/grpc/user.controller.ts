@@ -44,7 +44,7 @@ export class UserController implements UserServiceController {
   @GrpcMethod("UserService", "GetUser")
   async getUser(request: GetUserRequest): Promise<UserResponse> {
     const user = await this.queryBus.execute(
-      new GetUserQuery(request.email),
+      new GetUserQuery(request.email, request.phoneNumber),
     );
 
     return {

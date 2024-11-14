@@ -1,14 +1,17 @@
-import { Controller, Post, Body, Inject } from '@nestjs/common';
+import { Controller, Post, Body, Inject, UseInterceptors } from "@nestjs/common";
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import {
   CreateUserDto
 } from "@quentinpiot/dtos"
+import * as console from "node:console";
+import { GrpcToHttpInterceptor } from "../interceptors/grpc-to-http.interceptor";
 
 interface UserService {
   createUser(data: { email: string; password: string; phoneNumber: string }): Observable<{ id: string; email: string }>;
 }
 
+@UseInterceptors(GrpcToHttpInterceptor)
 @Controller('users')
 export class UserController {
   private userService: UserService;
@@ -16,7 +19,12 @@ export class UserController {
 
   constructor(@Inject('USER_PACKAGE') private client: ClientGrpc) {}
   onModuleInit() {
-    this.userService = this.client.getService<UserService>('UserService');
+    try {
+      this.userService = this.client.getService<UserService>('UserService')
+
+    }catch (error) {
+      console.log(error)
+    }
   }
 
   @Post()

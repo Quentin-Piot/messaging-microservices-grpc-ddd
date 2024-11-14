@@ -62,10 +62,8 @@ jobs:
           chmod 600 ~/.ssh/private.pem
           ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
           
-          
           # Copy deployment files
-          
-          ssh  -i ~/.ssh/private.pem ec2-user@$EC2_HOST "mkdir -p /home/ec2-user/${{ inputs.image-name }}"
+          ssh -i ~/.ssh/private.pem ec2-user@$EC2_HOST "mkdir -p /home/ec2-user/${{ inputs.image-name }}"
           scp -i ~/.ssh/private.pem ${{ inputs.app-path }}/ci/docker-compose.yml ec2-user@$EC2_HOST:/home/ec2-user/${{ inputs.image-name }}/docker-compose.yml
           
           # Create and copy .env
@@ -84,3 +82,25 @@ jobs:
           
           # Cleanup
           rm .env
+
+      - name: Check Docker Compose service health
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY_DEV }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          # Check the health status of Docker Compose services
+          ssh -i ~/.ssh/private.pem ec2-user@$EC2_HOST '
+            echo "Checking if all services are healthy..."
+            attempt_counter=0
+            max_attempts=6  # 6 attempts, each waiting for 5 seconds = 30 seconds total
+            until [ "$(sudo docker-compose -f /home/ec2-user/${{ inputs.image-name }}/docker-compose.yml ps -q | xargs docker inspect -f '{{ .State.Health.Status }}' | grep -c unhealthy)" -eq 0 ]; do
+              if [ ${attempt_counter} -eq ${max_attempts} ]; then
+                echo "Max attempts reached, some services are not healthy."
+                exit 1
+              fi
+              attempt_counter=$((attempt_counter+1))
+              echo "Waiting for services to be healthy..."
+              sleep 5  # wait 5 seconds between checks
+            done
+            echo "All services are healthy!"
+          '
