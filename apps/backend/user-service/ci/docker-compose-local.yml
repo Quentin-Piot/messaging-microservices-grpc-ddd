@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  user-service:
+    build:
+      context: ../../../../
+      dockerfile: apps/backend/user-service/ci/Dockerfile
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/user_db  # Remplacer localhost par postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=user_db
+      - POSTGRES_HOST=postgres  # Remplacer localhost par postgres
+
+    depends_on:
+      - postgres
+    ports:
+      - "5000:5000"
+    volumes:
+      - shared-data:/shared
+    
+volumes:
+  shared-data:
+    driver: local
+  postgres_data:
+
+networks:
+  default:
+    external:
+      name: ec2-user_user-network

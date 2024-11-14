@@ -1,0 +1,20 @@
+meta {
+  name: Create User online
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://52.66.173.198:3000/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    
+    "email" : "qkpiot@gmail.com",
+    "password" : "password",
+    "phoneNumber" : "0698288010"
+  }
+}
