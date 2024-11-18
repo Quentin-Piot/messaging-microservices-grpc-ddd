@@ -43,6 +43,8 @@ COPY --from=installer /app/packages/dtos/dist ./apps/backend/user-service/node_m
 COPY --from=installer /app/packages/dtos/package.json ./apps/backend/user-service/node_modules/@quentinpiot/dtos/package.json
 COPY --from=installer /app/packages/validation/dist ./apps/backend/user-service/node_modules/@quentinpiot/validation/dist
 COPY --from=installer /app/packages/validation/package.json ./apps/backend/user-service/node_modules/@quentinpiot/validation/package.json
+COPY --from=installer /app/packages/health/dist ./apps/backend/user-service/node_modules/@quentinpiot/health/dist
+COPY --from=installer /app/packages/health/package.json ./apps/backend/user-service/node_modules/@quentinpiot/health/package.json
 
 # Ajout des utilisateurs non-root
 RUN addgroup --system --gid 1001 nodejs
