@@ -5,9 +5,12 @@ import { UserRepository } from "./infrastructure/persistence/repositories/user.r
 import { PrismaService } from "./infrastructure/persistence/prisma/prisma.service";
 import { GetUserHandler } from "./queries/handlers/get-user.handler";
 import { CreateUserHandler } from "./commands/handlers/create-user.handler";;
+import {
+  HealthModule
+} from "@quentinpiot/health";
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule,HealthModule],
   controllers: [UserController],
   providers: [
     PrismaService,

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import {
   CreateUserDto
 } from "@quentinpiot/dtos"
-import * as console from "node:console";
 import { GrpcToHttpInterceptor } from "../interceptors/grpc-to-http.interceptor";
 
 interface UserService {
