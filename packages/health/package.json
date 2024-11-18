@@ -1,0 +1,22 @@
+{
+  "name": "@quentinpiot/health",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "../health/dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "../health/node_modules/.bin/tsc -p tsconfig.json",
+    "clean": "rimraf ../validation/dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/microservices": "^10.4.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3"
+  }
+}
