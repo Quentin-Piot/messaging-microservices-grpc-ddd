@@ -1,21 +1,21 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import StatusPage from "@/pages/status.page";
-import { Provider } from "@/components/ui/provider"
+import { Provider } from "@/components/ui/provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Router from "@/components/router.tsx";
+
+
+const queryClient = new QueryClient();
+
+
 function App() {
 
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: StatusPage(),
-    },
-  ]);
-
-
   return (
-    <Provider>
-      <RouterProvider router={router} />
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider>
+        <Router />
+      </Provider>
+    </QueryClientProvider>
+
   );
 }
 
