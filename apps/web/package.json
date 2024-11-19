@@ -1,7 +1,7 @@
 {
   "name": "web",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@chakra-ui/react": "^3.1.2",
     "@emotion/react": "^11.13.3",
+    "@quentinpiot/dtos": "workspace:*",
     "@tanstack/react-query": "^5.60.5",
     "next-themes": "^0.4.3",
     "react": "^18.3.1",

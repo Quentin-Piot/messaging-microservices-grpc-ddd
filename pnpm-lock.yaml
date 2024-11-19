@@ -283,6 +283,9 @@ importers:
       '@emotion/react':
         specifier: ^11.13.3
         version: 11.13.3(@types/react@18.3.12)(react@18.3.1)
+      '@quentinpiot/dtos':
+        specifier: workspace:*
+        version: link:../../packages/dtos
       '@tanstack/react-query':
         specifier: ^5.60.5
         version: 5.60.5(react@18.3.1)
@@ -352,6 +355,9 @@ importers:
       '@nestjs/common':
         specifier: ^10.0.0
         version: 10.4.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/terminus':
+        specifier: ^10.2.3
+        version: 10.2.3(@grpc/grpc-js@1.12.2)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.1.2(@nestjs/common@10.4.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1))(@nestjs/common@10.4.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.6)(@nestjs/microservices@10.4.6)(@prisma/client@5.22.0(prisma@5.22.0))(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@quentinpiot/protos':
         specifier: workspace:*
         version: link:../protos

@@ -1,9 +1,7 @@
 import { IsEmail, IsString, MinLength } from "class-validator";
-import {
-  CreateUserRequest,
-} from "@quentinpiot/protos/generated/user";
+import type { CreateUserRequest, UserResponse } from "@quentinpiot/protos/generated/user";
 
-export class CreateUserDto implements CreateUserRequest{
+export class CreateUserDto implements CreateUserRequest {
 
   @IsEmail()
   email: string;
@@ -14,4 +12,12 @@ export class CreateUserDto implements CreateUserRequest{
 
   @IsString()
   phoneNumber: string;
+}
+
+
+export class CreateUserResponse implements Partial<UserResponse> {
+  createdAt: string;
+  email: string;
+  phoneNumber: string;
+  updatedAt: string;
 }

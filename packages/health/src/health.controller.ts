@@ -11,14 +11,14 @@ export interface HealthCheckRequest {
   service: string;
 }
 
-export interface HealthCheckResposne {
+export interface HealthCheckResponse {
   status: ServingStatus;
 }
 
 @Controller()
 export class HealthController {
   @GrpcMethod('Health', 'Check')
-  check(data: HealthCheckRequest, metadata: any): HealthCheckResposne {
+  check(data: HealthCheckRequest, metadata: any): HealthCheckResponse {
     return { status: ServingStatus.SERVING };
   }
 }
