@@ -1,7 +1,15 @@
-import { CallHandler, ExecutionContext, HttpException, HttpStatus, Injectable, NestInterceptor } from "@nestjs/common";
+import {
+  CallHandler,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NestInterceptor,
+} from "@nestjs/common";
+
+import { status as GrpcStatus } from "@grpc/grpc-js";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { status as GrpcStatus } from "@grpc/grpc-js";
 
 export const HTTP_STATUS_CODE: Record<number, number> = {
   [HttpStatus.BAD_REQUEST]: GrpcStatus.INVALID_ARGUMENT,
@@ -36,14 +44,16 @@ export class GrpcToHttpInterceptor implements NestInterceptor {
 
         if (httpStatus) {
           const errorMessage = error.details || "An error occurred";
-          return throwError(
-            () => new HttpException(errorMessage, httpStatus),
-          );
+          return throwError(() => new HttpException(errorMessage, httpStatus));
         }
 
         // Default to internal server error if no matching HTTP status found
         return throwError(
-          () => new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+          () =>
+            new HttpException(
+              "Internal server error",
+              HttpStatus.INTERNAL_SERVER_ERROR,
+            ),
         );
       }),
     );

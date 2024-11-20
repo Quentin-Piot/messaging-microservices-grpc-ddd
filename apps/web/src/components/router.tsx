@@ -1,10 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import StatusPage from "@/pages/status.page";
 
-
 function Router() {
-
-
   const router = createBrowserRouter([
     {
       path: "/",
@@ -12,11 +10,7 @@ function Router() {
     },
   ]);
 
-
-  return (
-    <RouterProvider router={router} />
-
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default Router;

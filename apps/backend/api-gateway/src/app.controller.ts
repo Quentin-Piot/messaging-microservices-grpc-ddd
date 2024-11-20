@@ -1,5 +1,10 @@
 import { Controller, Get } from "@nestjs/common";
-import { GRPCHealthIndicator, HealthCheck, HealthCheckService } from "@nestjs/terminus";
+import {
+  GRPCHealthIndicator,
+  HealthCheck,
+  HealthCheckService,
+} from "@nestjs/terminus";
+
 import { join } from "path";
 
 @Controller("")
@@ -7,8 +12,7 @@ export class AppController {
   constructor(
     private health: HealthCheckService,
     private grpc: GRPCHealthIndicator,
-  ) {
-  }
+  ) {}
 
   @Get("/health")
   @HealthCheck()
@@ -18,12 +22,21 @@ export class AppController {
         this.grpc.checkService("user_service", "user_service", {
           timeout: 500,
           package: "user",
-          protoPath: join(__dirname, "..", "node_modules", "@quentinpiot", "protos", "user.proto"),
-          url: process.env.NODE_ENV === "development" ? "localhost:5000" : "user-service:5000", // URL du microservice
+          protoPath: join(
+            __dirname,
+            "..",
+            "node_modules",
+            "@quentinpiot",
+            "protos",
+            "user.proto",
+          ),
+          url:
+            process.env.NODE_ENV === "development"
+              ? "localhost:5000"
+              : "user-service:5000", // URL du microservice
         }),
     ]);
   }
-
 
   @Get()
   getHome(): string {

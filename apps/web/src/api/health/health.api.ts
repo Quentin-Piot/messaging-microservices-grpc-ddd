@@ -1,5 +1,6 @@
-import api from "@/api/helpers/api.ts";
 import { HealthCheckResponse } from "@quentinpiot/dtos";
+
+import api from "@/api/helpers/api.ts";
 
 export const getHealthStatus = async () => {
   try {

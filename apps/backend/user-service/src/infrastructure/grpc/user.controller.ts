@@ -1,36 +1,40 @@
-import { Controller, UseFilters, UsePipes, ValidationPipe } from "@nestjs/common";
-import { GrpcMethod } from "@nestjs/microservices";
-import { CommandBus, QueryBus } from "@nestjs/cqrs";
-import { GetUserQuery } from "../../queries/get-user.query";
-import {
-  CreateUserDto
-} from "@quentinpiot/dtos"
+import { CreateUserDto } from "@quentinpiot/dtos";
 import {
   GetUserRequest,
   UserResponse,
   UserServiceController,
 } from "@quentinpiot/protos/generated/user";
-import {
-  ValidationFilter,
-} from "@quentinpiot/validation";
+import { ValidationFilter } from "@quentinpiot/validation";
 
 import { CreateUserCommand } from "../../commands/create-user.command";
+import { GetUserQuery } from "../../queries/get-user.query";
+
+import {
+  Controller,
+  UseFilters,
+  UsePipes,
+  ValidationPipe,
+} from "@nestjs/common";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { GrpcMethod } from "@nestjs/microservices";
 
 @Controller()
 export class UserController implements UserServiceController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-  ) {
-  }
+  ) {}
 
   @GrpcMethod("UserService", "CreateUser")
   @UsePipes(new ValidationPipe({ transform: true }))
   @UseFilters(new ValidationFilter())
   async createUser(request: CreateUserDto): Promise<UserResponse> {
-
     const user = await this.commandBus.execute(
-      new CreateUserCommand(request.email + '', request.password, request.phoneNumber),
+      new CreateUserCommand(
+        request.email + "",
+        request.password,
+        request.phoneNumber,
+      ),
     );
 
     return {

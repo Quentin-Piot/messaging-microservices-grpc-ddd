@@ -1,12 +1,12 @@
-import { Injectable } from "@nestjs/common";
 import { UserEntity } from "../../../domain/entities/user.entity";
-import { PrismaService } from "../prisma/prisma.service";
 import { IUserRepository } from "../../../interfaces/user-repository.interface";
+import { PrismaService } from "../prisma/prisma.service";
+
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-  constructor(private prisma: PrismaService) {
-  }
+  constructor(private prisma: PrismaService) {}
 
   async create(user: UserEntity): Promise<UserEntity> {
     const created = await this.prisma.user.create({
@@ -26,13 +26,13 @@ export class UserRepository implements IUserRepository {
     );
   }
 
-  async findByEmailOrPhoneNumber(email: string, phoneNumber:string): Promise<UserEntity | null> {
+  async findByEmailOrPhoneNumber(
+    email: string,
+    phoneNumber: string,
+  ): Promise<UserEntity | null> {
     const user = await this.prisma.user.findFirst({
       where: {
-        OR: [
-          { email },
-          { phoneNumber },
-        ],
+        OR: [{ email }, { phoneNumber }],
       },
     });
 

@@ -22,7 +22,11 @@
         "strictNullChecks": false,
         "noImplicitAny": false,
         "strictBindCallApply": false,
-        "noFallthroughCasesInSwitch": false
+        "noFallthroughCasesInSwitch": false,
+
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     },
     "exclude": ["node_modules", "dist"]
 }

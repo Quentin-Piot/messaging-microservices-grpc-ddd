@@ -1,3 +1,6 @@
 export class GetUserQuery {
-  constructor(public readonly email: string, public readonly phoneNumber: string) {}
+  constructor(
+    public readonly email: string,
+    public readonly phoneNumber: string,
+  ) {}
 }

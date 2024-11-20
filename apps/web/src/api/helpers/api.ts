@@ -12,12 +12,12 @@ class ApiHelper {
   }
 
   private async request<T>(
-    method: 'GET' | 'POST',
+    method: "GET" | "POST",
     url: string,
-    body?: unknown
+    body?: unknown,
   ): Promise<T> {
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
 
     const options: RequestInit = {
@@ -34,7 +34,9 @@ class ApiHelper {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || `Request failed with status ${response.status}`);
+        throw new Error(
+          error.message || `Request failed with status ${response.status}`,
+        );
       }
 
       return (await response.json()) as T;
@@ -44,11 +46,11 @@ class ApiHelper {
   }
 
   async get<T>(url: string): Promise<T> {
-    return this.request<T>('GET', url);
+    return this.request<T>("GET", url);
   }
 
   async post<T>(url: string, body: unknown): Promise<T> {
-    return this.request<T>('POST', url, body);
+    return this.request<T>("POST", url, body);
   }
 }
 
