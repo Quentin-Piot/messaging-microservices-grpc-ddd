@@ -17,6 +17,7 @@
     "@nestjs/microservices": "^10.4.6"
   },
   "devDependencies": {
+    "@quentinpiot/configs": "workspace:*",
     "typescript": "^5.1.3"
   }
 }

@@ -21,6 +21,8 @@
       <excludeFolder url="file://$MODULE_DIR$/postman" />
       <excludeFolder url="file://$MODULE_DIR$/apps/backend/api-gateway/.turbo" />
       <excludeFolder url="file://$MODULE_DIR$/apps/web/.turbo" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/backend/user-service" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/web" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -6,7 +6,7 @@ const project = resolve(process.cwd(), "tsconfig.json");
 module.exports = {
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": "latest"
+    "ecmaVersion": "latest",
   },
   extends: [
     "eslint:recommended",
@@ -37,21 +37,22 @@ module.exports = {
   rules: {
     "prettier/prettier": ["error", { singleQuote: false }],
     "quotes": ["error", "double", { avoidEscape: true }],
-      "simple-import-sort/imports": [
-        "error",
-        {
-          groups: [
-            ['^@nestjs','^nestjs'],
+    "simple-import-sort/imports": [
+      "error",
+      {
+        groups: [
+          ["^@nestjs", "^nestjs"],
 
-            ['^node:', '^@?[a-z]'],
+          ["^node:", "^@?[a-z]"],
 
-            ['^@quentinpiot/'],
+          ["^@quentinpiot/"],
 
-            ['^@/','^[..]', '^[.]'],
+          ["^@/", "^[..]", "^[.]"],
 
-          ]
-        }
-      ],
-      "simple-import-sort/exports": "error",
-    },
+        ],
+      },
+    ],
+    "simple-import-sort/exports": "error",
+    "turbo/no-undeclared-env-vars": "off",
+  },
 };

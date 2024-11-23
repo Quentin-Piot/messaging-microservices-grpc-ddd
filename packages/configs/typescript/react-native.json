@@ -1,8 +1,0 @@
-{
-  "extends": "./react.json",
-  "compilerOptions": {
-    "jsx": "react-native",
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
-  }
-}
