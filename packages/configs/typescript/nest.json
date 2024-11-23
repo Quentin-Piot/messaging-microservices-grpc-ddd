@@ -1,7 +1,6 @@
 {
   "extends": "./base-common-js.json",
   "compilerOptions": {
-    "emitDeclarationOnly": true,
     "removeComments": true,
     "sourceMap": true,
     "incremental": true,
