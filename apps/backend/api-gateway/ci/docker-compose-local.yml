@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   api-gateway:
-    image: ${AWS_ECR_REGISTRY}/messaging/api-gateway-dev:latest
+    build:
+      context: ../../../../
+      dockerfile: apps/backend/api-gateway/ci/Dockerfile
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -42,8 +44,3 @@ volumes:
     driver: local
   keycloak_postgres_data:
     driver: local
-
-networks:
-  default:
-    external:
-      name: ec2-user_user-network
