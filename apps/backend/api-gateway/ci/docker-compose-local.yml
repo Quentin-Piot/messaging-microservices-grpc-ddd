@@ -8,44 +8,11 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - KEYCLOAK_URL=http://keycloak:8180
     ports:
       - "3000:3000"
     volumes:
       - shared-data:/shared
-    depends_on:
-      - keycloak
-
-
-  keycloak-db:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: keycloak_db
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak
-    volumes:
-      - keycloak_postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak_db
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: keycloak
-    ports:
-      - "8180:8080"
-    entrypoint: >
-      /bin/bash -c "
-      /opt/keycloak/bin/kc.sh start-dev"
-    restart: always
 
 volumes:
   shared-data:
-    driver: local
-  keycloak_postgres_data:
     driver: local
