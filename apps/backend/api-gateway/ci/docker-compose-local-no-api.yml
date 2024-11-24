@@ -1,19 +1,6 @@
 version: '3.8'
 
 services:
-  api-gateway:
-    image: ${AWS_ECR_REGISTRY}/messaging/api-gateway-dev:latest
-    environment:
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - KEYCLOAK_URL=http://keycloak:8180
-    ports:
-      - "3000:3000"
-    volumes:
-      - shared-data:/shared
-    depends_on:
-      - keycloak
-
   keycloak-db:
     image: postgres:16
     environment:
@@ -21,7 +8,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
     volumes:
-      - keycloak_pg_data:/var/lib/postgresql/data
+      - keycloak_postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
 
@@ -36,17 +23,13 @@ services:
       KC_DB_PASSWORD: keycloak
     ports:
       - "8180:8080"
-    command: start-dev
-    depends_on:
-      - keycloak-db
+    entrypoint: >
+      /bin/bash -c "
+      /opt/keycloak/bin/kc.sh start-dev"
+    restart: always
 
 volumes:
   shared-data:
     driver: local
-  keycloak_pg_data:
+  keycloak_postgres_data:
     driver: local
-
-networks:
-  default:
-    external:
-      name: ec2-user_user-network
