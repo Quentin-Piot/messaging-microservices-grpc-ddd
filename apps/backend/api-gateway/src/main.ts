@@ -1,3 +1,4 @@
+import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { GrpcToHttpInterceptor } from "nestjs-grpc-exceptions";
 
@@ -8,6 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes();
   app.useGlobalInterceptors(new GrpcToHttpInterceptor());
   app.enableCors();
+  await ConfigModule.forRoot();
   await app.listen(3000);
 }
 

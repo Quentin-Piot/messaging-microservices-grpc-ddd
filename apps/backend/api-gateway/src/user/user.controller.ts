@@ -10,17 +10,14 @@ import { ClientGrpc } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
 import { CreateUserDto } from "@quentinpiot/dtos";
-import { UserResponse } from "@quentinpiot/protos/generated/user";
+import {
+  UserResponse,
+  UserServiceController,
+} from "@quentinpiot/protos/generated/user";
 
 import { GrpcToHttpInterceptor } from "@/interceptors/grpc-to-http.interceptor";
 
-interface UserService {
-  createUser(data: {
-    email: string;
-    password: string;
-    phoneNumber: string;
-  }): Observable<UserResponse>;
-}
+interface UserService extends UserServiceController {}
 
 @UseInterceptors(GrpcToHttpInterceptor)
 @Controller("users")

@@ -1,18 +1,13 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { JwtModule } from "@nestjs/jwt";
 import { ClientsModule, Transport } from "@nestjs/microservices";
 
 import { join } from "path";
 
-import { AuthController } from "./auth.controller";
+import { AuthController } from "@/auth/auth.controller";
+import { UserController } from "@/user/user.controller";
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: "5m" },
-    }),
     ClientsModule.register([
       {
         name: "USER_PACKAGE",
@@ -36,7 +31,6 @@ import { AuthController } from "./auth.controller";
       },
     ]),
   ],
-  controllers: [AuthController],
-  providers: [],
+  controllers: [UserController],
 })
-export class AuthModule {}
+export class UserModule {}

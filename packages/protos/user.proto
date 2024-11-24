@@ -5,6 +5,7 @@ package user;
 service UserService {
   rpc CreateUser (CreateUserRequest) returns (UserResponse);
   rpc GetUser (GetUserRequest) returns (UserResponse);
+  rpc CheckPasswordCombination(EmailPhoneNumberPassword) returns (UserResponse);
 }
 
 
@@ -32,14 +33,24 @@ message CreateUserRequest {
   string phoneNumber = 3;
 }
 
+
+
 message GetUserRequest {
   string email = 1;
   string phoneNumber = 2;
 }
 
+message EmailPhoneNumberPassword {
+  string password = 1;
+  optional string email = 2;
+  optional string phoneNumber = 3;
+}
+
+
 message UserResponse {
-  string email = 1;
-  string phoneNumber = 2;
-  string createdAt = 3;
-  string updatedAt = 4;
+  string id = 1;
+  string email = 2;
+  string phoneNumber = 3;
+  string createdAt = 4;
+  string updatedAt = 5;
 }

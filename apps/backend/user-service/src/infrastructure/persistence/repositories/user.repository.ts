@@ -1,14 +1,14 @@
-import { UserEntity } from "../../../domain/entities/user.entity";
-import { IUserRepository } from "../../../interfaces/user-repository.interface";
-import { PrismaService } from "../prisma/prisma.service";
-
 import { Injectable } from "@nestjs/common";
+
+import { UserEntity, UserEntityWithoutId } from "@/domain/entities/user.entity";
+import { IUserRepository } from "@/interfaces/user-repository.interface";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class UserRepository implements IUserRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(user: UserEntity): Promise<UserEntity> {
+  async create(user: UserEntityWithoutId): Promise<UserEntity> {
     const created = await this.prisma.user.create({
       data: {
         email: user.email,
@@ -18,6 +18,7 @@ export class UserRepository implements IUserRepository {
     });
 
     return new UserEntity(
+      created.id,
       created.email,
       created.password,
       created.phoneNumber,
@@ -39,6 +40,7 @@ export class UserRepository implements IUserRepository {
     if (!user) return null;
 
     return new UserEntity(
+      user.id,
       user.email,
       user.password,
       user.phoneNumber,

@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength } from "class-validator";
+import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
 import type { CreateUserRequest, UserResponse } from "@quentinpiot/protos/generated/user";
 
 export class CreateUserDto implements CreateUserRequest {
