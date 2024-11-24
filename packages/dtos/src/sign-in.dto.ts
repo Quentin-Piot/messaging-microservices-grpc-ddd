@@ -6,7 +6,7 @@ export class EmailPhoneNumberPasswordDto implements EmailPhoneNumberPassword {
   @IsOptional()
   @IsEmail()
   @ValidateIf(req=>req.email || !req.phoneNumber )
-  email: string;
+  email?: string;
 
   @IsString()
   @MinLength(8)
@@ -14,5 +14,16 @@ export class EmailPhoneNumberPasswordDto implements EmailPhoneNumberPassword {
 
   @IsString()
   @ValidateIf(req=>!req.email || req.phoneNumber )
-  phoneNumber: string;
+  phoneNumber?: string;
+}
+
+
+export class SignInResponseDto {
+
+  constructor(accessToken:string) {
+    this.accessToken = accessToken;
+  }
+
+  @IsString()
+  accessToken: string;
 }

@@ -1,45 +1,33 @@
-import { Controller, Inject, Post } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
+import { Controller, Inject, Post, Req, UseGuards } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
+import { AuthGuard } from "@nestjs/passport";
 
+import { Request } from "express";
+
+import {
+  EmailPhoneNumberPasswordDto,
+  SignInResponseDto,
+} from "@quentinpiot/dtos";
 import {
   UserResponse,
   UserServiceController,
 } from "@quentinpiot/protos/generated/user";
+
+import { AuthService } from "@/auth/auth.service";
+import { LocalEmailAuthGuard } from "@/auth/local-email-auth.guard";
 interface UserService extends UserServiceController {}
 
 @Controller("auth")
 export class AuthController {
-  private userService: UserService;
-
   constructor(
     @Inject("USER_PACKAGE") private client: ClientGrpc,
 
-    private jwtService: JwtService,
+    private service: AuthService,
   ) {}
 
-  onModuleInit() {
-    try {
-      this.userService = this.client.getService<UserService>("UserService");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   @Post()
-  async signIn(
-    password: string,
-    email?: string,
-    phoneNumber?: string,
-  ): Promise<{ access_token: string }> {
-    const user = (await this.userService.checkPasswordCombination({
-      password,
-      email,
-      phoneNumber,
-    })) as UserResponse;
-    const payload = { sub: user.id, username: email || password };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+  @UseGuards(LocalEmailAuthGuard)
+  async login(@Req() req: Request): Promise<SignInResponseDto> {
+    return this.service.login(req.user);
   }
 }
