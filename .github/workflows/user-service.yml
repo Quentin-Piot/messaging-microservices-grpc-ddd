@@ -7,6 +7,8 @@ on:
       - '.github/workflows/user-service.yml'
       - '.github/workflows/reusable-build.yml'
       - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
   pull_request:
     branches: [ "master" ]
 
