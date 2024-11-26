@@ -1,4 +1,4 @@
-import { Request as OriginalRequest } from "express";
+import type { Request as OriginalRequest } from "express";
 
 import type { UserResponse } from "@quentinpiot/protos/generated/user";
 

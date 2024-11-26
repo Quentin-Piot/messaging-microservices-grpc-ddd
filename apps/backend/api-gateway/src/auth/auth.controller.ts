@@ -2,7 +2,7 @@ import { Controller, Inject, Post, Req, UseGuards } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
 import { AuthGuard } from "@nestjs/passport";
 
-import { Request } from "express";
+import type { Request } from "express";
 
 import {
   EmailPhoneNumberPasswordDto,

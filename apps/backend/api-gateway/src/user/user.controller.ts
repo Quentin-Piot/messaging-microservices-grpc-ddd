@@ -10,13 +10,8 @@ import {
 } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
 
-import { Request } from "express";
-
 import { CreateUserDto } from "@quentinpiot/dtos";
-import {
-  UserResponse,
-  UserServiceController,
-} from "@quentinpiot/protos/generated/user";
+import { UserServiceController } from "@quentinpiot/protos/generated/user";
 
 import { JwtAuthGuard } from "@/auth/jwt-auth.guard";
 import { GrpcToHttpInterceptor } from "@/interceptors/grpc-to-http.interceptor";
