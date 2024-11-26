@@ -47,7 +47,6 @@
     "@nestjs/schematics": "^10.2.3",
     "@nestjs/testing": "^10.4.9",
     "@quentinpiot/configs": "workspace:*",
-    "@quentinpiot/eslint-config": "workspace:*",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.0",

@@ -2,11 +2,9 @@
   "name": "@quentinpiot/configs",
   "private": true,
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "files": [
+    "typescript",
     "eslint/base.js",
-    "typescript"
+    "base.js"
   ]
 }
