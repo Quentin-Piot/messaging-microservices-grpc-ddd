@@ -108,9 +108,6 @@ importers:
       '@quentinpiot/configs':
         specifier: workspace:*
         version: link:../../../packages/configs
-      '@quentinpiot/eslint-config':
-        specifier: workspace:*
-        version: link:../../../packages/eslint-config
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -244,9 +241,6 @@ importers:
       '@quentinpiot/configs':
         specifier: workspace:*
         version: link:../../../packages/configs
-      '@quentinpiot/eslint-config':
-        specifier: workspace:*
-        version: link:../../../packages/eslint-config
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -341,9 +335,6 @@ importers:
       '@quentinpiot/configs':
         specifier: workspace:*
         version: link:../../packages/configs
-      '@quentinpiot/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@tanstack/eslint-plugin-query':
         specifier: ^5.61.3
         version: 5.61.3(eslint@9.15.0)(typescript@5.7.2)
