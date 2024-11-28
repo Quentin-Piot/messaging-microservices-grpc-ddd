@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # Phase de construction
 FROM base AS builder
@@ -47,9 +47,9 @@ COPY --from=installer /app/packages/dtos/package.json ./apps/backend/api-gateway
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nestjs
-USER nestjs
+RUN adduser --system --uid 1001 react
+USER react
 
 EXPOSE 3000
 
-CMD ["node","-C", "apps/web", "start"]
+CMD ["pnpm","-C", "apps/web", "start"]
