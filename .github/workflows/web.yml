@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      - 'apps/backend/web/**'
+      - 'apps/web/**'
       - '.github/workflows/web.yml'
       - '.github/workflows/reusable-build.yml'
       - 'packages/**'
