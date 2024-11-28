@@ -14,7 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "strictPropertyInitialization": false,
-    "strict": true
+    "strict": true,
   },
   "exclude": [
     "node_modules"

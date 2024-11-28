@@ -1,24 +1,8 @@
+const nestConfig = require("@quentinpiot/configs/eslint/nest");
 module.exports = {
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    project: "tsconfig.json",
-    tsconfigRootDir: __dirname,
-    sourceType: "module",
-  },
-  extends: [
-    "@quentinpiot/eslint-config/base.js",
-  ],
-  root: true,
-  env: {
-    node: true,
-    jest: true,
-  },
-  ignorePatterns: [".eslintrc.cjs"],
+  ...nestConfig,
+  plugins: [...nestConfig.plugins],
   rules: {
-    "@typescript-eslint/interface-name-prefix": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "no-unused-vars": "off"
+    ...nestConfig.rules,
   },
 };

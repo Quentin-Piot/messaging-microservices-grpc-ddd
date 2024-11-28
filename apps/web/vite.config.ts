@@ -1,11 +1,16 @@
+import { reactRouter } from "@react-router/dev/vite";
+import autoprefixer from "autoprefixer";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(),
-  ],
+  css: {
+    postcss: {
+      plugins: [ autoprefixer],
+    },
+  },
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
   },
+  plugins: [reactRouter(), tsconfigPaths()],
 });

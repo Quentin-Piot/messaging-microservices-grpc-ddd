@@ -13,22 +13,18 @@ module.exports = {
   root: true,
   env: {
     node: true,
-    jest: true,
   },
   plugins: ["react-hooks",
     "react-refresh",
     "@tanstack/query"],
   ignorePatterns: [".eslintrc.cjs"],
   rules: {
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true },
-    ],
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "react-refresh/only-export-components" :"off"
   },
 };
 
