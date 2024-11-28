@@ -71,7 +71,6 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "VITE_API_GATEWAY_URL=${{ secrets.VITE_API_GATEWAY_URL }}" >> .env
-          VITE_API_GATEWAY_URL
           scp -i ~/.ssh/private.pem .env ec2-user@$EC2_HOST:/home/ec2-user/${{ inputs.image-name }}/.env
           
           # Deploy
