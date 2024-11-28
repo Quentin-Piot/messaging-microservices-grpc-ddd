@@ -5,6 +5,7 @@ COPY . /app
 FROM dependencies-env AS development-dependencies-env
 COPY ./package.json pnpm-lock.yaml /app/
 WORKDIR /app
+
 RUN pnpm i --frozen-lockfile
 
 FROM dependencies-env AS production-dependencies-env

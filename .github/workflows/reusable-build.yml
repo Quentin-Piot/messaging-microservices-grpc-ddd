@@ -46,6 +46,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          build-args:
+            VITE_API_GATEWAY_URL=${{ secrets.VITE_API_GATEWAY_URL }}
           file: ${{ inputs.app-path }}/ci/Dockerfile
           push: true
           tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.image-name }}:latest

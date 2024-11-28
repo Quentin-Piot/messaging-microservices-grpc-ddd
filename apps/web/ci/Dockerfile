@@ -15,6 +15,9 @@ RUN turbo prune web --docker
 FROM base AS installer
 RUN apk update && apk add --no-cache libc6-compat curl
 WORKDIR /app
+ARG VITE_API_GATEWAY_URL
+ENV VITE_API_GATEWAY_URL=$VITE_API_GATEWAY_URL
+
 
 RUN npm i -g pnpm turbo
 RUN pnpm config set store-dir ~/.pnpm-store
