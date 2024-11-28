@@ -1,6 +1,5 @@
 FROM node:20-alpine AS base
 
-# Phase de construction
 FROM base AS builder
 RUN apk update && apk add --no-cache libc6-compat curl
 
@@ -45,7 +44,6 @@ COPY --from=installer /app/packages/dtos/dist ./apps/backend/api-gateway/node_mo
 COPY --from=installer /app/packages/dtos/package.json ./apps/backend/api-gateway/node_modules/@quentinpiot/dtos/package.json
 
 
-# Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 react
 USER react
