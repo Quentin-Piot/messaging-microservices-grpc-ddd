@@ -1,0 +1,22 @@
+name: Web
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'apps/backend/web/**'
+      - '.github/workflows/web.yml'
+      - '.github/workflows/reusable-build.yml'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      app-path: apps/web
+      image-name: messaging/web-dev
+      app-name: web
+    secrets: inherit

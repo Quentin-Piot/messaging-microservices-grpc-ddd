@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    image: ${AWS_ECR_REGISTRY}/messaging/web-dev:latest
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "5173:3000"
+    volumes:
+      - shared-data:/shared
+
+volumes:
+  shared-data:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: ec2-user_user-network
